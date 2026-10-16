@@ -59,8 +59,20 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient, Category = "HUD")
 	TObjectPtr<UStatsComponent> Stats;
 
+	/**
+	 * Fires only when health crosses the low threshold, in either direction.
+	 * C++ decides *when* this happens; WBP_HUD decides what it looks like.
+	 * No C++ body: UHT generates one that calls into the Blueprint, and does
+	 * nothing if the Blueprint does not implement the event.
+	 */
+	UFUNCTION(BlueprintImplementableEvent, Category = "HUD")
+	void OnLowHealthChanged(bool bIsLow);
+
 private:
 	/** Bound to UStatsComponent::OnStatsChanged; UFUNCTION is required for that. */
 	UFUNCTION()
 	void HandleStatsChanged();
+
+	/** Low-health state at the previous refresh, so only transitions are reported. */
+	bool bWasLowHealth = false;
 };

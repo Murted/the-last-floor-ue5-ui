@@ -29,6 +29,10 @@ void UHUDWidget::NativeConstruct()
 
 	Stats->OnStatsChanged.AddDynamic(this, &UHUDWidget::HandleStatsChanged);
 
+	// A widget can be removed and added again; start from "not low" so that a
+	// run which is already in danger still gets its OnLowHealthChanged(true).
+	bWasLowHealth = false;
+
 	// The delegate only fires on change, so paint the current values once.
 	RefreshFromStats();
 }
@@ -73,11 +77,20 @@ void UHUDWidget::RefreshFromStats()
 		LOCTEXT("FloorFormat", "FLOOR {0}"),
 		FText::AsNumber(Stats->Floor)));
 
-	const bool bShowThreat = Stats->IsLowHealth();
+	const bool bIsLow = Stats->IsLowHealth();
 	Txt_ThreatBanner->SetText(LOCTEXT("ThreatBanner", "DANGER"));
 	// Collapsed rather than Hidden: a collapsed widget takes no layout space.
 	Txt_ThreatBanner->SetVisibility(
-		bShowThreat ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Collapsed);
+		bIsLow ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Collapsed);
+
+	// Every stat change lands here, coins included. Only the transition is news:
+	// raising the event on each refresh would restart the Blueprint animation
+	// whenever anything at all changed.
+	if (bIsLow != bWasLowHealth)
+	{
+		bWasLowHealth = bIsLow;
+		OnLowHealthChanged(bIsLow);
+	}
 }
 
 #undef LOCTEXT_NAMESPACE
