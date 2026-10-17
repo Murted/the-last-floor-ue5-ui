@@ -43,3 +43,10 @@ Build/
 *.exp
 *.dll
 *.exe
+
+# Personal study notes and the tooling that turns them into slides
+Docs/Learning.md
+Docs/Learning.slides.html
+Tools/build_learning_deck.py
+Tools/learning_quiz_options.py
+Tools/__pycache__/
