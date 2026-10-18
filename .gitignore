@@ -50,3 +50,6 @@ Docs/Learning.slides.html
 Tools/build_learning_deck.py
 Tools/learning_quiz_options.py
 Tools/__pycache__/
+# Local hand-off notes for continuing the work in another session
+Docs/CONTEXT.md
+Docs/HANDOFF.md
