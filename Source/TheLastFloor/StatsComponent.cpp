@@ -58,6 +58,18 @@ void UStatsComponent::GoToNextFloor()
 	OnStatsChanged.Broadcast();
 }
 
+void UStatsComponent::ResetRun()
+{
+	// Start from the limits rather than the declared defaults, so a MaxHealth
+	// tuned in the editor is also the health a new run starts with.
+	Health = MaxHealth;
+	Energy = MaxEnergy;
+	Currency = 0;
+	Floor = 1;
+
+	OnStatsChanged.Broadcast();
+}
+
 float UStatsComponent::GetHealthFraction() const
 {
 	// MaxHealth is clamped to at least 1 in the editor, so this cannot divide by zero.

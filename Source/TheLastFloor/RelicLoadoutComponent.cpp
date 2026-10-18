@@ -64,3 +64,31 @@ void URelicLoadoutComponent::UnequipSlot(int32 SlotIndex)
 	EquippedRelics[SlotIndex] = NAME_None;
 	OnLoadoutChanged.Broadcast();
 }
+
+int32 URelicLoadoutComponent::GetNumEquipped() const
+{
+	int32 Count = 0;
+	for (const FName& RelicId : EquippedRelics)
+	{
+		if (!RelicId.IsNone())
+		{
+			++Count;
+		}
+	}
+	return Count;
+}
+
+void URelicLoadoutComponent::UnequipAll()
+{
+	if (GetNumEquipped() == 0)
+	{
+		// Already empty: no state moved, so listeners stay asleep.
+		return;
+	}
+
+	for (FName& RelicId : EquippedRelics)
+	{
+		RelicId = NAME_None;
+	}
+	OnLoadoutChanged.Broadcast();
+}

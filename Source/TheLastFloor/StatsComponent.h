@@ -69,6 +69,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Stats")
 	void GoToNextFloor();
 
+	/**
+	 * Puts every stat back to the start of a climb: full health and energy,
+	 * no currency, floor 1. The component outlives screens, so a new run has
+	 * to reset it explicitly or it would continue the previous one.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	void ResetRun();
+
 	// --- Derived values the HUD asks for rather than computing itself ---
 
 	/** Health as 0..1, ready for a progress bar. */

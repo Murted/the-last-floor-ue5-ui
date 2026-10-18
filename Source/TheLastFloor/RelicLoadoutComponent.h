@@ -41,6 +41,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Relics")
 	int32 GetNumSlots() const { return NumSlots; }
 
+	/** How many slots currently hold a relic. Used by the results screen. */
+	UFUNCTION(BlueprintPure, Category = "Relics")
+	int32 GetNumEquipped() const;
+
 	/**
 	 * Puts a relic into a slot. A relic can be equipped only once: if it already
 	 * sits in another slot, the two slots swap contents, so dragging between
@@ -53,6 +57,10 @@ public:
 	/** Empties a slot. Does nothing if it is already empty. */
 	UFUNCTION(BlueprintCallable, Category = "Relics")
 	void UnequipSlot(int32 SlotIndex);
+
+	/** Empties every slot, for the start of a new run. One broadcast at most. */
+	UFUNCTION(BlueprintCallable, Category = "Relics")
+	void UnequipAll();
 
 private:
 	/** One entry per slot; NAME_None means empty. Always exactly NumSlots long. */
